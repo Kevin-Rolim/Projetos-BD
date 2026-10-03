@@ -1,0 +1,117 @@
+# Mini-mundo — ServiceFlow
+
+A empresa possui diversos **departamentos**, responsáveis por organizar seus funcionários. Cada departamento possui um identificador, nome, centro de custo e situação de atividade. Um departamento pode possuir vários funcionários, enquanto cada funcionário pertence a apenas um departamento por vez.
+
+Cada **funcionário** possui identificador, nome, CPF, e-mail corporativo, telefone, data de admissão e situação de atividade. O CPF e o e-mail corporativo devem ser únicos. Funcionários desligados não são excluídos, pois seus dados podem estar relacionados a chamados e equipamentos históricos.
+
+Um funcionário pode possuir uma **conta de usuário** para acessar o sistema. Cada conta possui identificador, login, hash da senha, perfil, data de criação, data do último acesso e situação da conta. Um funcionário pode possuir no máximo uma conta, e cada conta pertence a um único funcionário.
+
+Os usuários podem possuir os perfis de **Usuário, Técnico ou Administrador**.
+
+Os técnicos responsáveis pelo suporte são organizados em **equipes de suporte**, como Service Desk, Infraestrutura, Sistemas e Redes. Cada equipe possui identificador, nome, descrição e situação de atividade.
+
+Um técnico pode participar de várias equipes e uma equipe pode possuir vários técnicos. Para cada participação devem ser registradas a data de entrada e, quando aplicável, a data de saída da equipe.
+
+Os funcionários podem abrir **chamados de suporte**. Cada chamado possui identificador, título, descrição, solicitante, categoria, prioridade, status atual, equipe responsável, técnico responsável, data de abertura, prazo de atendimento, data de resolução e data de fechamento.
+
+Todo chamado deve possuir obrigatoriamente um solicitante, uma categoria, uma prioridade, um status e uma equipe responsável. O técnico responsável pode não estar definido no momento da abertura.
+
+Cada chamado pertence a uma **categoria**, utilizada para classificar o problema apresentado. Uma categoria possui identificador, nome, descrição, prazo padrão de SLA em horas e situação de atividade. Exemplos de categorias são Hardware, Software, Rede, Acesso, E-mail, Impressora e ERP.
+
+Os chamados também possuem uma **prioridade**, responsável por indicar a importância e urgência do atendimento. Cada prioridade possui identificador, nome, peso e descrição. Inicialmente podem existir as prioridades Baixa, Normal, Alta e Crítica.
+
+Todo chamado possui também um **status**, que representa sua situação dentro do fluxo de atendimento. Cada status possui identificador, nome, descrição e uma indicação de encerramento.
+
+Os principais status são:
+
+- Aberto;
+- Em triagem;
+- Em atendimento;
+- Aguardando usuário;
+- Resolvido;
+- Fechado;
+- Cancelado.
+
+Nem toda mudança entre status é permitida. O sistema deve manter uma estrutura que defina quais **transições de status** são válidas.
+
+Por exemplo:
+
+```text
+Aberto → Em triagem
+Em triagem → Em atendimento
+Em atendimento → Aguardando usuário
+Aguardando usuário → Em atendimento
+Em atendimento → Resolvido
+Resolvido → Fechado
+Resolvido → Em atendimento
+Aberto → Cancelado
+```
+
+Toda alteração de status deve ser registrada no **histórico do chamado**.
+
+O histórico deve armazenar o chamado relacionado, o usuário responsável pela alteração, o status anterior, o novo status, a data e hora da alteração e uma observação opcional.
+
+Dessa forma, deve ser possível reconstruir todo o ciclo de vida de um chamado.
+
+Exemplo:
+
+```text
+Chamado #185
+
+08:02 - Aberto
+08:10 - Em triagem
+08:27 - Em atendimento
+09:34 - Aguardando usuário
+10:17 - Em atendimento
+11:43 - Resolvido
+14:22 - Fechado
+```
+
+Funcionários e técnicos também podem adicionar **comentários** aos chamados. Cada comentário possui identificador, chamado relacionado, autor, texto, data e hora e uma indicação que informa se o comentário é interno.
+
+Comentários internos são destinados à equipe de suporte, enquanto comentários comuns podem fazer parte da comunicação com o solicitante.
+
+Os chamados também podem receber **tags**, utilizadas para facilitar sua classificação e pesquisa. Uma tag possui identificador e nome.
+
+Um chamado pode possuir várias tags e uma mesma tag pode estar presente em vários chamados. Entretanto, uma determinada tag não pode ser adicionada mais de uma vez ao mesmo chamado.
+
+A empresa também possui **equipamentos de TI**, como notebooks, desktops, monitores, celulares, impressoras, switches e roteadores.
+
+Cada equipamento possui identificador, número de patrimônio, número de série, tipo, fabricante, modelo, data de aquisição e situação atual. O número de patrimônio deve ser único.
+
+Os equipamentos podem ser entregues aos funcionários. Como um mesmo equipamento pode ser utilizado por diferentes funcionários ao longo do tempo, o sistema deve manter um **histórico de alocação de equipamentos**.
+
+Cada alocação registra o funcionário, o equipamento, a data de entrega e a data de devolução.
+
+Quando a data de devolução ainda não estiver preenchida, significa que o equipamento continua em posse daquele funcionário.
+
+Um equipamento não pode possuir duas alocações ativas simultaneamente.
+
+Os chamados também podem ser associados aos equipamentos envolvidos no problema.
+
+Um chamado pode estar relacionado a nenhum, um ou vários equipamentos. Da mesma forma, um equipamento pode aparecer em vários chamados ao longo de sua utilização.
+
+Essa relação deve permitir consultas como:
+
+- quantos chamados determinado equipamento já apresentou;
+- quais equipamentos apresentam mais problemas;
+- quais tipos de equipamentos geram mais chamados;
+- histórico de problemas de uma máquina específica.
+
+O sistema também deve controlar o **SLA dos chamados**.
+
+Cada categoria possui um prazo padrão de atendimento em horas. Quando um chamado é aberto, esse prazo deve ser utilizado para calcular sua data limite.
+
+Inicialmente, o cálculo poderá considerar horas corridas.
+
+O banco deve permitir identificar se um chamado está:
+
+- dentro do prazo;
+- próximo do vencimento;
+- vencido;
+- cumprido dentro do SLA;
+- encerrado fora do SLA.
+
+Os dados históricos do sistema devem ser preservados. Funcionários, departamentos, equipes, categorias e equipamentos utilizados anteriormente não devem simplesmente desaparecer quando deixarem de ser utilizados.
+
+O objetivo do banco é permitir que a empresa acompanhe todo o processo de suporte, desde a abertura de um chamado até seu encerramento, mantendo informações suficientes para análise operacional, histórico, auditoria, controle de equipamentos e avaliação do desempenho da equipe de TI.
