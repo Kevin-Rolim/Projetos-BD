@@ -4,6 +4,8 @@ Repositório destinado ao estudo prático de **Banco de Dados com SQL Server**, 
 
 A proposta é desenvolver cada banco a partir de um **pedido de cliente**, um **mini-mundo** e um conjunto de requisitos, realizando desde a modelagem até a implementação completa em T-SQL.
 
+--Obs.: Os pedidos de cliente, minimundo e conjunto de requisitos foram feitos totalmente por IA, então é possível haver falta de lógica em alguns pontos, mas a cada ponto que eu passar vou tentar corrigir, provavelmente ainda haverá falhas, mas menos grotescas.
+
 ## Objetivo
 
 Praticar Banco de Dados Relacional e SQL Server através de projetos com níveis crescentes de complexidade.
